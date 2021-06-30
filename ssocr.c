@@ -170,6 +170,7 @@ int main(int argc, char **argv)
   int offset;  /* offset for shear */
   double theta; /* rotation angle */
   char *output_file=NULL; /* write processed image to file */
+  char *cropped_file=NULL; /* write cropped image to file */
   char *output_fmt=NULL; /* use this format */
   char *debug_image_file=NULL; /* ...to this file */
   unsigned int flags=0; /* set by options, see #defines in .h file */
@@ -212,6 +213,7 @@ int main(int argc, char **argv)
       {"one-ratio", 1, 0, 'r'}, /* height/width threshold to recognize a one */
       {"minus-ratio", 1, 0, 'm'}, /* w/h threshold to recognize a minus sign */
       {"output-image", 1, 0, 'o'}, /* write processed image to given file */
+      {"output-cropped", 1, 0, 'R'}, /* write cropped image to given file */
       {"output-format", 1, 0, 'O'}, /* format of output image */
       {"debug-image", 2, 0, 'D'}, /* write a debug image */
       {"process-only", 0, 0, 'p'}, /* image processing only */
@@ -233,7 +235,7 @@ int main(int argc, char **argv)
       {0, 0, 0, 0} /* terminate long options */
     };
     c = getopt_long (argc, argv,
-                     "hVt:vaTn:i:d:r:m:o:O:D::pPf:b:Igl:SXCc:H:W:sA:G",
+                     "hVt:vaTn:i:d:r:m:o:R:O:D::pPf:b:Igl:SXCc:H:W:sA:G",
                      long_options, &option_index);
     if (c == -1) break; /* leaves while (1) loop */
     switch (c) {
@@ -320,6 +322,11 @@ int main(int argc, char **argv)
       case 'o':
         if(optarg) {
           output_file = strdup(optarg);
+        }
+        break;
+      case 'R':
+        if(optarg) {
+          cropped_file = strdup(optarg);
         }
         break;
       case 'O':
@@ -883,6 +890,10 @@ int main(int argc, char **argv)
           }
           /* adapt threshold to cropped image */
           thresh = adapt_threshold(&image, thresh, lt, 0, 0, -1, -1, flags);
+          /* write cropped image to file if requested */
+          if(cropped_file) {
+            save_image("cropped", image, output_fmt, cropped_file, flags);
+          }
         } else {
           fprintf(stderr, "%s: error: crop command needs 4 arguments\n", PROG);
           exit(99);

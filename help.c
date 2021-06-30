@@ -129,6 +129,7 @@ void usage(char *name, FILE *f)
   fprintf(f, "         -H, --dec-h-ratio=#      max_dig_h/h ratio to recognize decimal point\n");
   fprintf(f, "         -W, --dec-w-ratio=#      max_dig_w/w ratio to recognize decimal point\n");
   fprintf(f, "         -o, --output-image=FILE  write processed image to FILE\n");
+  fprintf(f, "         -R, --cropped-image=FILE write cropped image to FILE (when use crop)\n");
   fprintf(f, "         -O, --output-format=FMT  use output format FMT (Imlib2 formats)\n");
   fprintf(f, "         -p, --process-only       do image processing only, no OCR\n");
   fprintf(f, "         -D, --debug-image[=FILE] write a debug image to FILE or %s\n",DEBUG_IMAGE_NAME);
